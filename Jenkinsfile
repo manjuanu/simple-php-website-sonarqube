@@ -13,5 +13,14 @@ checkout scm
                      //stash includes: ".scannerwork/report-task.txt", name: 'sonar'
                     }
           }
+	stage('stage2'){
+
+        timeout(time: 40, unit: 'MINUTES') {
+            def qGate = waitForQualityGate()
+            if (qGate.status != 'OK') {
+                error "Pipeline aborted due to quality gate failure: ${qGate.status}"
+            }
+        }
+    }   
 }
  
